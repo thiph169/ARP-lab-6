@@ -13,53 +13,35 @@
 #' 
 
 
-greedy_knapsack <- function(x, W, fast = FALSE) {
-  # Error handling
-  if(!all(is.data.frame(x), 
-          dim(x)[2] == 2,
-          "v" %in% names(x),
-          "w" %in% names(x)
-  )) {
-    stop('x has to be of the type data.frame with two columns.')
+greedy_knapsack<- function(x, W, fast = FALSE){
+  
+  stopifnot(all(x >= 0))
+  stopifnot(class(x)=="data.frame") 
+  stopifnot(W >= 0)
+  
+  
+  weight<- x[,1]
+  value<- x[,2]
+  r<- value/weight
+  r_sort<- order(r,decreasing=TRUE)
+  
+  items<- numeric(0)
+  totWeight<- 0
+  totValue<- 0
+  
+  for (i in r_sort){
+    if(weight[i] + totWeight > W){
+      break
+    }
+    if((weight[i] + totWeight) <= W){
+      items<- c(items, i)
+      totWeight<- weight[i] + totWeight
+      totValue<- value[i] + totValue
+    }
   }
-  
-  if(!all(is.numeric(x$w), is.numeric(x$v))) {
-    stop('Values in the data.frame must be numeric and greater than 0.')
-  }
-  
-  if (!all(x > 0)) {
-    stop('Values in the data.frame must be numeric and greater than 0.')
-  }
-  
-  if (!all(is.numeric(W), W > 0)) {
-    stop("Weight value must be numeric and greater than 0.")
-  }
-  
-  n <- nrow(x)
-  
-  # Add column with initial position
-  x$element <- 1:n
-  # Sort the data frame according to value-weight ratio in decreasing order
-  x <- x[order(x$v / x$w, decreasing = TRUE), ]
-  
-  value <- 0
-  remainingWeight <- W
-  elements <- c()
-  # Pick elements with high ratio (higher in the data frame) first. If the weight limit
-  # allows, pick the ones with smaller ratio
-  for (e in 1:n) {
-    if (x$w[e] <= remainingWeight) {
-      value <- value + x$v[e]
-      remainingWeight <- remainingWeight - x$w[e]
-      elements <- c(elements, x$element[e])
-    } 
-  }
-  
-  solution <- list()
-  solution$value <- value
-  solution$elements <- elements
-  
-  return(solution)
+  ls<- list(value = round(totValue), elements = items)
+  return(ls)
 }
-#Generate knapsack objects
+
+
 

@@ -6,7 +6,7 @@ Date: 2017-10-06
 Authors@R: as.person(c(
     "Thi Pham <thiph169@student.liu.se> [cre]",
     "Somaya Khoda Bakhsh <somkh364@student.liu.se> [aut]"))
-Maintainer: Thi <<thiph169@student.liu.se>
+Maintainer: Thi <thiph169@student.liu.se>
 Description: Three different approach to solve knapsack problem: Brute force search, Dynamic programming and Greedy heuristic.
 Depends: R (>= 3.2.3)
 License: CC0

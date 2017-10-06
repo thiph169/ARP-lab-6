@@ -32,64 +32,44 @@ brute_force_knapsack <- function(x, W) {
     stop("Weight value must be numeric and greater than 0.")
   }
   
-  if (!any(x$w <= W)) {
-    stop('All elements are heavier than W.')
+  # Only consider items which weigh less or equal than W.
+  # 
+  # x <- reduce(x, W)
+  
+  # Create a data.frame which contains all possible combinations
+  n <- nrow(x)
+  if (n < 31) {
+    # Generate a war matrix where each column represents a combination, each row
+    # represents an item. Transpose. Remove extra columns (with only zeros).
+    # Convert to logical. Convert to data frame
+    df <- as.data.frame(
+      matrix(
+        as.logical(
+          t(sapply(1:2^n, FUN = function(x) {intToBits(x)}))[, 1:n]),
+        ncol = n)
+    )
+  } else {
+    df <- expand.grid(lapply(row.names(x), function(n) seq.int(0,1)))
   }
   
-  # Setting the starting values for the loop
+  # Add column with the weight and the value of each combination
+  weight <- apply(df, 1, function(n) sum(n * x$w))
+  value <- apply(df, 1, function(m) sum(m * x$v))
   
-  elements <- which.max(x$w <= W)
-  weight <- x$w[elements]
-  value <- x$v[elements]
+  df$weight <- weight
+  df$value <- value
   
-  res <- list(value = value, elements = elements)
+  # Filter columns and return the combination with the highest value
+  comb <- df[df$weight <= W, ]
+  best_combination <- comb[max(comb$value) == comb$value, ]
   
-  # The for loop creates all possible combinations of items. It starts with 
-  # combining 2 elements. With each iteration it will increase the number of 
-  # elements by 1 until the sequence is finished (i == W/minx$w) or one of the
-  # conditions to return the result is fulfilled.
+  res <- list(value = best_combination$value, 
+              elements = which(best_combination == 1))
+  res
   
-  for (i in seq(from = 2, to = floor(W/min(x$w)))) {
-    
-    # Create all  possible combinations as well as of the sum
-    # of the weights and values for each combination
-    
-    all_combinations <- utils::combn(as.integer(row.names(x)), i)
-    all_weights <- utils::combn(x$w, i, sum)
-    all_values <- utils::combn(x$v, i, sum)
-    
-    possible_combination <- which(all_weights <= W)
-    max_value <- which.max(all_values[possible_combination])
-    
-    tmp_weight <- all_weights[possible_combination[max_value]]
-    tmp_value <- all_values[possible_combination[max_value]]
-    tmp_elements <- all_combinations[, possible_combination[max_value]]
-    
-    # Check whether the value increased in comparison to the iteration before
-    # or not. If the values increased the tmp_ values will be the new 
-    # preliminary results.
-    
-    if (any(tmp_value > value, is.na(value))) {
-      weight <- tmp_weight
-      value <- tmp_value
-      elements <- tmp_elements
-      
-      # If the current weight + the smallest weight in the vector of weights
-      # exceeds the limit W the algorithm will return the current result.
-      
-      if ((weight + min(x$w)) >= W) {
-        res$value <- value
-        res$elements <- elements
-        return(res)
-      }
-    }
-    else {
-      return(res)
-    }
-  }
 }
 
-#Generate knapsack objects
+
 
 
 
