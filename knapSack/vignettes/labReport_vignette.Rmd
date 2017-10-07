@@ -31,17 +31,12 @@ _How long time does it takes to run the algorithm for n = 16 objects?_
 knapsack_objects <- knapSack:::create_knapsack(2000)
 bm <- benchmark(
   knapSack:::brute_force_knapsack(knapsack_objects[1:16, ], W = 5000),
-  knapSack:::brute_force_knapsack_improve(knapsack_objects[1:16, ], W = 5000),
   columns = c("replications", "elapsed", "user.self", "sys.self"),
   replications = 10
 )
 print(bm)
 ```
-Thus, it takes `r bm$elapsed[1]` seconds on this machine to run the brute force algorithm with 16 objects.
-
-####Improve brute force code
-
-The the execution time of 10 replications of the brute force algorithm with 16 object have improves from `r bm$elapsed[1]` to `r bm$elapsed[2]`.
+It takes `r bm$elapsed` seconds on this machine to run the brute force algorithm with 16 objects.
 
 
 ### Dynamic
@@ -52,18 +47,14 @@ _How much time does it takes to run the algorithm for n = 500 objects?_
 knapsack_objects <- knapSack:::create_knapsack(2000)
 bm <- benchmark(
   knapSack:::knapsack_dynamic(knapsack_objects[1:500, ], W = 5000),
-  knapSack:::knapsack_dynamic_improve(knapsack_objects[1:500, ], W = 5000),
   columns = c("replications", "elapsed", "user.self", "sys.self"),
   replications = 10
 )
 print(bm)
 ```
 
-Thus, it takes `r bm$elapsed[1]` seconds on this machine to run the brute force algorithm with 500 objects.
+It takes `r bm$elapsed` seconds on this machine to run the brute force algorithm with 500 objects.
 
-####Improve dynamic
-
-The the execution time of 10 replications of the dynamic algorithm with 500 objects have improved from `r bm$elapsed[1]` to `r bm$elapsed[2]`.
 
 ### Greedy
 
@@ -80,6 +71,22 @@ bm <- benchmark(
 print(bm)
 ```
 
-Thus, it takes `r bm$elapsed` seconds on this machine to run the brute force algorithm with 1000000 objects.
+It takes `r bm$elapsed` seconds on this machine to run the brute force algorithm with 1000000 objects.
 
+
+### Improving code
+##### Brute force
+
+```{r, cache = TRUE}
+knapsack_objects <- knapSack:::create_knapsack(2000)
+bm <- benchmark(
+  knapSack:::brute_force_knapsack(knapsack_objects[1:10, ], W = 5000),
+  knapSack:::brute_force_knapsack(knapsack_objects[1:10, ], W = 5000), 
+  columns = c("replications", "elapsed", "user.self", "sys.self"),
+  replications = 10
+)
+print(bm)
+```
+
+The the execution time of 10 replications of the brute force algorithm with 10 object have decreased from `r bm$elapsed[2]` to `r bm$elapsed[1]`. Which is a `r (bm$elapsed[2] - bm$elapsed[1]) / (bm$elapsed[2]) * 100` % decrease.
 

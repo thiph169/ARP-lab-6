@@ -89,19 +89,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knapsack_objects &lt;-<span class="st"> </span>knapSack:::<span class="kw">create_knapsack</span>(<span class="dv">2000</span>)
 bm &lt;-<span class="st"> </span><span class="kw">benchmark</span>(
   knapSack:::<span class="kw">brute_force_knapsack</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">16</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>),
-  knapSack:::<span class="kw">brute_force_knapsack_improve</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">16</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>),
   <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">&quot;replications&quot;</span>, <span class="st">&quot;elapsed&quot;</span>, <span class="st">&quot;user.self&quot;</span>, <span class="st">&quot;sys.self&quot;</span>),
   <span class="dt">replications =</span> <span class="dv">10</span>
 )
 <span class="kw">print</span>(bm)</code></pre></div>
 <pre><code>##   replications elapsed user.self sys.self
-## 1           10   24.29     24.09     0.11
-## 2           10    0.08      0.07     0.00</code></pre>
-<p>Thus, it takes 24.29 seconds on this machine to run the brute force algorithm with 16 objects.</p>
-<div id="improve-brute-force-code" class="section level4">
-<h4>Improve brute force code</h4>
-<p>The the execution time of 10 replications of the brute force algorithm with 16 object have improves from 24.29 to 0.08.</p>
-</div>
+## 1           10   24.47     24.28     0.16</code></pre>
+<p>It takes 24.47 seconds on this machine to run the brute force algorithm with 16 objects.</p>
 </div>
 <div id="dynamic" class="section level3">
 <h3>Dynamic</h3>
@@ -109,19 +103,13 @@ bm &lt;-<span class="st"> </span><span class="kw">benchmark</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knapsack_objects &lt;-<span class="st"> </span>knapSack:::<span class="kw">create_knapsack</span>(<span class="dv">2000</span>)
 bm &lt;-<span class="st"> </span><span class="kw">benchmark</span>(
   knapSack:::<span class="kw">knapsack_dynamic</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">500</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>),
-  knapSack:::<span class="kw">knapsack_dynamic_improve</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">500</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>),
   <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">&quot;replications&quot;</span>, <span class="st">&quot;elapsed&quot;</span>, <span class="st">&quot;user.self&quot;</span>, <span class="st">&quot;sys.self&quot;</span>),
   <span class="dt">replications =</span> <span class="dv">10</span>
 )
 <span class="kw">print</span>(bm)</code></pre></div>
 <pre><code>##   replications elapsed user.self sys.self
-## 1           10  609.81    606.89     0.16
-## 2           10   28.98     28.84     0.11</code></pre>
-<p>Thus, it takes 609.81 seconds on this machine to run the brute force algorithm with 500 objects.</p>
-<div id="improve-dynamic" class="section level4">
-<h4>Improve dynamic</h4>
-<p>The the execution time of 10 replications of the dynamic algorithm with 500 objects have improved from 609.81 to 28.98.</p>
-</div>
+## 1           10   29.88      29.7     0.12</code></pre>
+<p>It takes 29.88 seconds on this machine to run the brute force algorithm with 500 objects.</p>
 </div>
 <div id="greedy" class="section level3">
 <h3>Greedy</h3>
@@ -135,8 +123,26 @@ bm &lt;-<span class="st"> </span><span class="kw">benchmark</span>(
 )
 <span class="kw">print</span>(bm)</code></pre></div>
 <pre><code>##   replications elapsed user.self sys.self
-## 1           10    8.11      7.91     0.19</code></pre>
-<p>Thus, it takes 8.11 seconds on this machine to run the brute force algorithm with 1000000 objects.</p>
+## 1           10    8.18      7.81     0.34</code></pre>
+<p>It takes 8.18 seconds on this machine to run the brute force algorithm with 1000000 objects.</p>
+</div>
+<div id="improving-code" class="section level3">
+<h3>Improving code</h3>
+<div id="brute-force" class="section level5">
+<h5>Brute force</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knapsack_objects &lt;-<span class="st"> </span>knapSack:::<span class="kw">create_knapsack</span>(<span class="dv">2000</span>)
+bm &lt;-<span class="st"> </span><span class="kw">benchmark</span>(
+  knapSack:::<span class="kw">brute_force_knapsack</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">10</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>),
+  knapSack:::<span class="kw">brute_force_knapsack</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">10</span>, ], <span class="dt">W =</span> <span class="dv">5000</span>), 
+  <span class="dt">columns =</span> <span class="kw">c</span>(<span class="st">&quot;replications&quot;</span>, <span class="st">&quot;elapsed&quot;</span>, <span class="st">&quot;user.self&quot;</span>, <span class="st">&quot;sys.self&quot;</span>),
+  <span class="dt">replications =</span> <span class="dv">10</span>
+)
+<span class="kw">print</span>(bm)</code></pre></div>
+<pre><code>##   replications elapsed user.self sys.self
+## 1           10    0.37      0.37        0
+## 2           10    0.39      0.40        0</code></pre>
+<p>The the execution time of 10 replications of the brute force algorithm with 10 object have decreased from 0.39 to 0.37. Which is a 5.1282051 % decrease.</p>
+</div>
 </div>
 </div>
 
