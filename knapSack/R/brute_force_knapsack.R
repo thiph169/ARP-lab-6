@@ -1,4 +1,3 @@
-
 #' Brute force search for knapsack problem
 #' 
 #' @param x data frame with two columns \code{w} (weight) and \code{v} (value) of items to place in the knapsack

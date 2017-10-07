@@ -1,4 +1,3 @@
-# 
 #' Greedy Heuristic approach for the knapsack problem
 #'
 #' @param x data frame with two columns \code{w} (weight) and \code{v} (value) of items to place in the knapsack
@@ -12,8 +11,7 @@
 #' @export
 #' 
 
-
-greedy_knapsack<- function(x, W, fast = FALSE){
+greedy_knapsack <- function(x, W, fast = FALSE){
   
   stopifnot(all(x >= 0))
   stopifnot(class(x)=="data.frame") 
@@ -42,6 +40,4 @@ greedy_knapsack<- function(x, W, fast = FALSE){
   ls<- list(value = round(totValue), elements = items)
   return(ls)
 }
-
-
 
