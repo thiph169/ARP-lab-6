@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/thiph169/ARP-lab-6.svg?branch=master)](https://travis-ci.org/thiph169/ARP-lab-6)
 
 # ARP-lab-6
 
